@@ -1,1 +1,11 @@
-/* You can add global styles to this file, and also import other style files */
+app-root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+h2 {
+  color: skyblue;
+  font-size: 6rem;
+}
