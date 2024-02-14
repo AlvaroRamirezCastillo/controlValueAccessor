@@ -1,4 +1,4 @@
-# ¿Te has preguntado cómo usar un componente Angular como si fuera un componente de formulario (<input />)?
+# ¿Te has preguntado cómo usar un componente Angular como si fuera un componente de formulario?
 
 ## Problema
 
@@ -10,7 +10,7 @@ Es posible que hayas creado un componente Angular y luego lo quieras usar como u
 
 Para transformar cualquier componente Angular en un componente de formulario, debes implementar el controlValueAccessor. A continuación, te enseñaré cómo.
 
-### paso 1
+### Paso 1
 
 En el decorador @Component, configuraremos el provider NG_VALUE_ACCESSOR para indicarle a Angular que el componente será un componente de formulario.
 
@@ -36,7 +36,7 @@ export class CircleComponent {
 }
 ```
 
-### paso 2
+### Paso 2
 
 Implementaremos la interfaz ControlValueAccessor a la clase del componente.
 
