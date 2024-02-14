@@ -93,6 +93,11 @@ export class CircleComponent implements ControlValueAccessor {
 
 * setDisabledState – Recibimos el valor del form control cada vez que se habilita o deshabilita en nuestro componente.
 
+## Repositorio
 
-[repositorio de ejemplo]()
+[ejemplo github]()
+
+## A continuación se presentará un video que explica lo escrito
+
+[![video](https://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg)](https://youtu.be/EdXM46wv0hU)
 
