@@ -1,27 +1,98 @@
-# ControlValueAccessor
+# Transformando cualquier componente Angular en un componente de formulario.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.1.3.
+Es posible que hayas creado un componente Angular y luego lo quieras usar como un componente de formulario, y te salga el siguiente error:
 
-## Development server
+![alt text](./resoureces/error-control-value-accessor.png)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Solución
 
-## Code scaffolding
+Para transformar cualquier componente Angular en un componente de formulario, debes implementar el controlValueAccessor. A continuación, te enseñaré cómo.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### paso 1
 
-## Build
+En el decorador @Component, configuraremos el provider NG_VALUE_ACCESSOR para indicarle a Angular que el componente será un componente de formulario.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+```typescript
+import { Component, signal, forwardRef } from '@angular/core';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
-## Running unit tests
+@Component({
+  selector: 'app-circle',
+  template: '<div class="circle" (click)="increase()">{{counter()}}</div>',
+  styleUrl: './circle.component.scss',
+  standalone: true,
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => CircleComponent),
+      multi: true
+    }
+  ]
+})
+export class CircleComponent {
+  ...
+}
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### paso 2
 
-## Running end-to-end tests
+Implementaremos la interfaz ControlValueAccessor a la clase del componente.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+```typescript
+import { Component, signal, forwardRef } from '@angular/core';
+import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 
-## Further help
+@Component({
+  selector: 'app-circle',
+  template: '<div class="circle" (click)="increase()">{{counter()}}</div>',
+  styleUrl: './circle.component.scss',
+  standalone: true,
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => CircleComponent),
+      multi: true
+    }
+  ]
+})
+export class CircleComponent implements ControlValueAccessor {
+  counter = signal(0);
+  onChange!: (counter: number) => void;
+  onTouched!: () => void;
+  disabled = false;
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+  increase() {
+    this.counter.update(counter => counter + 1);
+    this.onChange(this.counter());
+  }
+
+  writeValue(counter: number): void {
+    console.log(1, counter);
+    this.counter.set(counter);
+  }
+
+  registerOnChange(fn: (counter: number) => void): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(disabled: boolean): void {
+    this.disabled = disabled;
+  }
+}
+```
+
+* writeValue – Recibe el valor del form control en nuestro componente.
+
+* registerOnChange – Nos provee la función necesaria para indicar al form control que el valor de nuestro componente ha cambiado.
+
+* registerOnTouched – Nos provee la función necesaria para indicar al form control que el estado del componente ha cambiado.
+
+* setDisabledState – Recibimos el valor del form control cada vez que se habilita o deshabilita en nuestro componente.
+
+
+[repositorio de ejemplo]()
+
