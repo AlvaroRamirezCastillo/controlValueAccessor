@@ -1,5 +1,7 @@
 # ¿Te has preguntado cómo usar un componente Angular como si fuera un componente de formulario (<input />)?
 
+## Problema
+
 Es posible que hayas creado un componente Angular y luego lo quieras usar como un componente de formulario, y te salga el siguiente error:
 
 ![alt text](./resoureces/error-control-value-accessor.png)
